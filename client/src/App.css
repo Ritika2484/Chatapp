@@ -1,0 +1,696 @@
+/* ──────────────────────────────────────────────────────────────────────────
+   App.css  — Cozy 3D Claymorphic Redesign
+   Aesthetic: Soft, playful, warm, matte clay-like textures, and rounded shapes.
+   ────────────────────────────────────────────────────────────────────────── */
+
+/* ── Google Fonts ────────────────────────────────────────────────────────── */
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Poppins:wght@400;600;700&display=swap");
+
+/* ── CSS Custom Properties ───────────────────────────────────────────────── */
+:root {
+  --bg-gradient: linear-gradient(135deg, #E8DFFF 0%, #C9B8FF 100%);
+  --bg-surface: #FDFBF7; /* warm off-white */
+  --bg-surface-accent: #F6F3EC;
+
+  --accent-1: #6C4FD6;   /* warm purple */
+  --accent-2: #8E7CFA;   /* lighter purple */
+  --accent-blue: #5A9EF8;
+  --accent-gradient: linear-gradient(135deg, var(--accent-1), var(--accent-blue));
+  
+  --text-primary: #443B5B;
+  --text-secondary: #766B8F;
+  --text-muted: #A39AB5;
+
+  /* 3D Claymorphic Shadow Tokens */
+  --clay-shadow-card: 12px 12px 24px rgba(166, 150, 220, 0.45), 
+                      -8px -8px 20px #FFFFFF;
+  --clay-shadow-button: 6px 6px 12px rgba(108, 79, 214, 0.25), 
+                        -4px -4px 10px #FFFFFF,
+                        inset -2px -2px 4px rgba(0, 0, 0, 0.1),
+                        inset 2px 2px 4px rgba(255, 255, 255, 0.4);
+  --clay-shadow-button-hover: 8px 8px 16px rgba(108, 79, 214, 0.3), 
+                              -6px -6px 12px #FFFFFF,
+                              inset -2px -2px 4px rgba(0, 0, 0, 0.1),
+                              inset 2px 2px 4px rgba(255, 255, 255, 0.4);
+  --clay-shadow-button-active: inset 4px 4px 8px rgba(108, 79, 214, 0.3), 
+                               inset -4px -4px 8px #FFFFFF;
+  --clay-shadow-input: inset 3px 3px 6px rgba(166, 150, 220, 0.25), 
+                       inset -3px -3px 6px #FFFFFF;
+  --clay-shadow-bubble-other: 6px 6px 12px rgba(166, 150, 220, 0.2), 
+                              -4px -4px 10px #FFFFFF;
+
+  --radius-pill: 999px;
+  --radius-lg: 36px;
+  --radius-md: 20px;
+  --radius-sm: 14px;
+
+  --transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* ── Reset ───────────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  font-family: "Quicksand", sans-serif;
+  background: var(--bg-gradient);
+  color: var(--text-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+/* ── Background Decorative Elements ──────────────────────────────────────── */
+.decorations-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.clay-dec {
+  position: absolute;
+  filter: drop-shadow(4px 4px 8px rgba(166, 150, 220, 0.3));
+  animation: float 6s ease-in-out infinite;
+}
+
+.clay-dec-cloud1 {
+  top: 10%;
+  left: 15%;
+  width: 100px;
+  opacity: 0.85;
+}
+
+.clay-dec-cloud2 {
+  bottom: 15%;
+  right: 12%;
+  width: 130px;
+  animation-delay: 2s;
+  opacity: 0.85;
+}
+
+.clay-dec-heart {
+  top: 25%;
+  right: 20%;
+  width: 45px;
+  animation-delay: 1.5s;
+}
+
+.clay-dec-plant {
+  bottom: 8%;
+  left: 10%;
+  width: 90px;
+  animation-delay: 3s;
+}
+
+.clay-dec-sparkle {
+  top: 50%;
+  left: 8%;
+  width: 35px;
+  animation-delay: 4.5s;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-12px) rotate(3deg); }
+}
+
+/* ── Login / Join Screen ────────────────────────────────────────────────── */
+.login-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.login-card-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  padding-top: 60px; /* Space for peeking character avatar */
+}
+
+/* Cute 3D character peeking */
+.login-character {
+  position: absolute;
+  top: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 130px;
+  height: 130px;
+  z-index: 2;
+  filter: drop-shadow(0px 8px 16px rgba(108, 79, 214, 0.25));
+  animation: peekGreeting 4s ease-in-out infinite alternate;
+}
+
+@keyframes peekGreeting {
+  0% { transform: translateX(-50%) translateY(5px) rotate(-1deg); }
+  100% { transform: translateX(-50%) translateY(-5px) rotate(1deg); }
+}
+
+.login-card {
+  background: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  padding: 3rem 2.25rem 2.25rem;
+  text-align: center;
+  box-shadow: var(--clay-shadow-card);
+  position: relative;
+  z-index: 1;
+  border: 4px solid #FFFFFF;
+}
+
+.login-title {
+  font-family: "Poppins", sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent-1);
+  margin-bottom: 0.5rem;
+}
+
+.login-subtitle {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-bottom: 2.25rem;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Input container with clay icon badge */
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-badge {
+  position: absolute;
+  left: 8px;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-pill);
+  background: #E8E5FD;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-1);
+  box-shadow: 2px 2px 4px rgba(108, 79, 214, 0.15), 
+              inset -1px -1px 2px rgba(0, 0, 0, 0.05),
+              inset 1px 1px 2px #FFFFFF;
+}
+
+.input-badge svg {
+  width: 18px;
+  height: 18px;
+}
+
+.login-input {
+  width: 100%;
+  background: var(--bg-surface-accent);
+  border: 2px solid transparent;
+  border-radius: var(--radius-pill);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 1.05rem;
+  font-weight: 600;
+  padding: 0.8rem 1rem 0.8rem 3.5rem;
+  outline: none;
+  box-shadow: var(--clay-shadow-input);
+  transition: var(--transition);
+}
+
+.login-input:focus {
+  border-color: var(--accent-2);
+  background: #FFFFFF;
+}
+
+.login-input::placeholder {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.login-error {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #E85B5B;
+  text-align: left;
+  padding-left: 1rem;
+}
+
+.login-btn {
+  background: var(--accent-gradient);
+  border: none;
+  border-radius: var(--radius-pill);
+  color: #FFFFFF;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 0.9rem;
+  box-shadow: var(--clay-shadow-button);
+  transition: var(--transition);
+  margin-top: 0.5rem;
+}
+
+.login-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--clay-shadow-button-hover);
+}
+
+.login-btn:active {
+  transform: translateY(1px);
+  box-shadow: var(--clay-shadow-button-active);
+}
+
+/* Social Logins */
+.social-login-container {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.social-title {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.social-title::before, .social-title::after {
+  content: "";
+  flex: 1;
+  height: 2px;
+  background: rgba(166, 150, 220, 0.2);
+}
+
+.social-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.social-btn {
+  width: 46px;
+  height: 46px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-surface-accent);
+  border: 2px solid #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 4px 4px 8px rgba(166, 150, 220, 0.25), 
+              -2px -2px 6px #FFFFFF,
+              inset -1px -1px 2px rgba(0, 0, 0, 0.05);
+  transition: var(--transition);
+}
+
+.social-btn:hover {
+  transform: translateY(-2px) scale(1.05);
+  background: #FFFFFF;
+}
+
+.social-btn:active {
+  transform: translateY(1px);
+  box-shadow: inset 2px 2px 4px rgba(166, 150, 220, 0.3);
+}
+
+.social-btn svg {
+  width: 20px;
+  height: 20px;
+  color: var(--text-secondary);
+}
+
+/* ── Chat Screen Layout ──────────────────────────────────────────────────── */
+.chatbox {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  gap: 1.25rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Header ──────────────────────────────────────────────────────────────── */
+.chatbox-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.75rem;
+  background: var(--bg-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--clay-shadow-card);
+  border: 3px solid #FFFFFF;
+  flex-shrink: 0;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-pill);
+  background: var(--accent-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: #FFFFFF;
+  flex-shrink: 0;
+  box-shadow: var(--clay-shadow-button);
+}
+
+.header-title {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--accent-1);
+}
+
+.header-user {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.status-badge {
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.35rem 0.8rem;
+  border-radius: var(--radius-pill);
+}
+
+.status-badge.online {
+  background: #EBFDF5;
+  color: #10B981;
+  border: 2px solid #D1FAE5;
+  box-shadow: inset 1px 1px 2px rgba(16, 185, 129, 0.2);
+}
+
+.status-badge.offline {
+  background: #FEF2F2;
+  color: #EF4444;
+  border: 2px solid #FEE2E2;
+  box-shadow: inset 1px 1px 2px rgba(239, 68, 68, 0.2);
+}
+
+.logout-btn {
+  background: var(--bg-surface-accent);
+  border: 2px solid #FFFFFF;
+  border-radius: var(--radius-pill);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 0.5rem 1.1rem;
+  box-shadow: 4px 4px 8px rgba(166, 150, 220, 0.2), 
+              -2px -2px 6px #FFFFFF;
+  transition: var(--transition);
+}
+
+.logout-btn:hover {
+  background: #FEF2F2;
+  color: #EF4444;
+  border-color: #FEE2E2;
+}
+
+.logout-btn:active {
+  transform: translateY(1px);
+}
+
+/* ── Messages Container ──────────────────────────────────────────────────── */
+.messages-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem 1.75rem;
+  background: rgba(253, 251, 247, 0.65);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 3px solid #FFFFFF;
+  box-shadow: var(--clay-shadow-card);
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  scroll-behavior: smooth;
+}
+
+.messages-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.messages-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.messages-container::-webkit-scrollbar-thumb {
+  background: rgba(166, 150, 220, 0.4);
+  border-radius: var(--radius-pill);
+}
+
+.empty-state {
+  text-align: center;
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 1.05rem;
+  margin: auto;
+  padding: 2rem 0;
+  animation: float 4s ease-in-out infinite alternate;
+}
+
+/* ── Message Bubble Layout ────────────────────────────────────────────────── */
+.message-wrapper {
+  display: flex;
+  flex-direction: column;
+  max-width: 65%;
+  animation: messagePop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+.message-wrapper.own {
+  align-self: flex-end;
+  align-items: flex-end;
+}
+
+.message-wrapper.other {
+  align-self: flex-start;
+  align-items: flex-start;
+}
+
+.message-username {
+  font-size: 0.8rem;
+  color: var(--accent-1);
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+  padding-left: 0.5rem;
+}
+
+.message-bubble {
+  padding: 0.8rem 1.2rem;
+  border-radius: var(--radius-md);
+  position: relative;
+  word-break: break-word;
+}
+
+.message-wrapper.own .message-bubble {
+  background: var(--accent-gradient);
+  color: #FFFFFF;
+  border-bottom-right-radius: 4px;
+  box-shadow: var(--clay-shadow-button);
+}
+
+.message-wrapper.other .message-bubble {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border-bottom-left-radius: 4px;
+  box-shadow: var(--clay-shadow-bubble-other);
+  border: 2px solid #FFFFFF;
+}
+
+.message-text {
+  font-size: 0.98rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.message-time {
+  display: block;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.75);
+  margin-top: 0.4rem;
+  text-align: right;
+}
+
+.message-wrapper.other .message-time {
+  color: var(--text-muted);
+}
+
+/* ── Footer / Input Bar ──────────────────────────────────────────────────── */
+.chatbox-footer {
+  padding: 0.8rem 1.2rem;
+  background: var(--bg-surface);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--clay-shadow-card);
+  border: 3px solid #FFFFFF;
+  flex-shrink: 0;
+}
+
+.message-input-form {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.message-input {
+  flex: 1;
+  background: var(--bg-surface-accent);
+  border: 2px solid transparent;
+  border-radius: var(--radius-pill);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 1.02rem;
+  font-weight: 600;
+  padding: 0.75rem 1.3rem;
+  outline: none;
+  box-shadow: var(--clay-shadow-input);
+  transition: var(--transition);
+}
+
+.message-input:focus {
+  border-color: var(--accent-2);
+  background: #FFFFFF;
+}
+
+.message-input::placeholder {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.message-input:disabled {
+  opacity: 0.6;
+}
+
+.send-btn {
+  width: 46px;
+  height: 46px;
+  border-radius: var(--radius-pill);
+  background: var(--accent-gradient);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  flex-shrink: 0;
+  box-shadow: var(--clay-shadow-button);
+  transition: var(--transition);
+}
+
+.send-btn:hover:not(:disabled) {
+  transform: scale(1.08) translateY(-1px);
+  box-shadow: var(--clay-shadow-button-hover);
+}
+
+.send-btn:active:not(:disabled) {
+  transform: scale(0.95);
+  box-shadow: var(--clay-shadow-button-active);
+}
+
+.send-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+  box-shadow: none;
+}
+
+/* ── Keyframes & Animations ──────────────────────────────────────────────── */
+@keyframes messagePop {
+  from { opacity: 0; transform: scale(0.9) translateY(12px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ── Responsive Styling ──────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .chatbox {
+    padding: 0.75rem;
+    gap: 0.75rem;
+  }
+
+  .chatbox-header {
+    padding: 0.75rem 1.25rem;
+  }
+
+  .messages-container {
+    padding: 1.2rem 1rem;
+    border-radius: var(--radius-md);
+  }
+
+  .message-wrapper {
+    max-width: 85%;
+  }
+
+  .chatbox-footer {
+    border-radius: var(--radius-md);
+    padding: 0.65rem 0.85rem;
+  }
+
+  .message-input {
+    border-radius: var(--radius-sm);
+  }
+
+  .clay-dec {
+    display: none; /* Hide background clutter on mobile */
+  }
+}
+
+/* ── Spinner ─────────────────────────────────────────────────────────────── */
+.btn-spinner {
+  width: 18px;
+  height: 18px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #FFFFFF;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
